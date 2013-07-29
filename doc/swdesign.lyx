@@ -1,0 +1,635 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass paper
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+pipresents manager SW Design
+\end_layout
+
+\begin_layout Section
+Model-View-Controller
+\end_layout
+
+\begin_layout Standard
+The software architecture is based on the MVC pattern.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename BlockDiagram.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Model
+\end_layout
+
+\begin_layout Standard
+The model is completely PHP-Based.
+ The interfaces, through which view and controller can access the model
+ are located in the 
+\emph on
+model
+\emph default
+ subdirectory.
+ The actual model has to implement the Model Interfaces, so it is transparent
+ to View and Controller which model is currently used.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Model-ClassDiagram.png
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Dummy implementation
+\end_layout
+
+\begin_layout Standard
+This is a hardcoded model for demo and testing purposes.
+\end_layout
+
+\begin_layout Subsubsection
+JSON Model
+\end_layout
+
+\begin_layout Standard
+The actual model used for this software is JSON based.
+ This means JSON is used for persistency.
+ The format here is NOT the one which is used by PiPresents.
+ Convertion needs a final 
+\emph on
+export
+\emph default
+ step, which will be described later in this document.
+\end_layout
+
+\begin_layout Standard
+There should be one JSON file per show (agenda).
+\end_layout
+
+\begin_layout Standard
+Since the model has to be reloaded from disk at every HTTP request, it must
+ not be built up completely but a file should only be loaded once data is
+ requested from that specific part of the model.
+\end_layout
+
+\begin_layout Subsection
+View/Controller
+\end_layout
+
+\begin_layout Standard
+View and Controller are actually merged into one component.
+ This documentation refers to them as 
+\emph on
+view components
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+The view is divided into several logical 
+\emph on
+view components
+\emph default
+.
+ E.g.
+ there is one component that provides an editing interface for a slide,
+ and a separate one for a movie show item.
+\end_layout
+
+\begin_layout Standard
+The view consists of a server and a client part.
+ The client part is made of HTML/CSS and JavaScript and runs in the browser.
+ The server part is written in PHP and serves as the interface to the model.
+ Data gets retrieved from the PHP backend via JSON RPC.
+\end_layout
+
+\begin_layout Subsubsection
+File structure
+\end_layout
+
+\begin_layout Standard
+All files related to view and controller are located inside the 
+\emph on
+view
+\emph default
+ subdirectory.
+ A 
+\emph on
+view component
+\emph default
+ consists of the client side 
+\emph on
+(HTML, CSS, JavaScript)
+\emph default
+ and the server side 
+\emph on
+(RPC Server, Management class)
+\emph default
+.
+ The file name convention is as follows:
+\end_layout
+
+\begin_layout Description
+Management
+\begin_inset space ~
+\end_inset
+
+Class <viewname>.class.php (Name of class is 
+\emph on
+<viewname>
+\emph default
+)
+\end_layout
+
+\begin_layout Description
+RPC
+\begin_inset space ~
+\end_inset
+
+Server <viewname>Rpc.class.php (Name of class is 
+\emph on
+<viewname>Rpc
+\emph default
+)
+\end_layout
+
+\begin_layout Description
+HTML <viewname>.tpl.php
+\end_layout
+
+\begin_layout Description
+CSS <viewname>.css
+\end_layout
+
+\begin_layout Description
+JavaScript <viewname>.js
+\end_layout
+
+\begin_layout Standard
+The management class is vital for all view components while all other files
+ are optional.
+\end_layout
+
+\begin_layout Subsubsection
+Accessing the file content
+\end_layout
+
+\begin_layout Standard
+The central class of each view component is the Management Class.
+ It has to
+\end_layout
+
+\begin_layout Itemize
+Implement interface View (View.class.php) and implement all of its methods
+\end_layout
+
+\begin_layout Itemize
+Be registered in the file 
+\emph on
+viewRegistration.php
+\end_layout
+
+\begin_layout Standard
+Having a look at the methods in 
+\emph on
+View
+\emph default
+ shows how to get access to the contents of the previously described files.
+ Methods can simply return an empty string or null (for getRpcClass) if
+ there is no such content.
+\end_layout
+
+\begin_layout Subsubsection
+Inheritance
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ViewClient-ClassDiagram.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The behavior of inheritance differs depending on the type of content.
+ Think of a 
+\emph on
+slide editor
+\emph default
+ (ViewSlideEditor), that inherits from a 
+\emph on
+general editor
+\emph default
+ view component (ViewEditor).
+\end_layout
+
+\begin_layout Description
+Management
+\begin_inset space ~
+\end_inset
+
+Class The above picture shows inheritance of the Management class.
+ It is entirely done by PHP.
+ Make sure management classes of all view parts (even the generic ones)
+ are registered with the system.
+\end_layout
+
+\begin_layout Description
+HTML Server (PHP) performes inheritance and generates HTML.
+ The result is a completely built HTML skeleton for each specific editor
+ (e.g.
+ ViewSlideEditor).
+ This means, the code from the ViewEditor component appears multiple times
+ in the HTML code (once for each derived specific editor).
+ So don't 
+\emph on
+apply id
+\emph default
+s to the elements but only 
+\emph on
+class
+\emph default
+es.
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Developers advice:
+\emph default
+ The 
+\emph on
+getHTML()
+\emph default
+ method of 
+\emph on
+ViewSlideEditor
+\emph default
+ should return the fully prepared HTML code.
+ The 
+\emph on
+getHTML()
+\emph default
+ method of 
+\emph on
+ViewEditor
+\emph default
+ should NOT return anything.
+ Nevertheless generic HTML parts should still be defined in the .tpl file
+ that belongs to the 
+\emph on
+ViewEditor
+\emph default
+ to avoid duplicate code.
+\end_layout
+
+\begin_layout Description
+CSS There is not an actual inheritance in CSS.
+ Instead there is one file to style the generic parts of the editor and
+ one for each editor to style the specific parts.
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Developers advice:
+\emph default
+ The 
+\emph on
+getCss()
+\emph default
+ method of all View Components (general and specific ones - i.e.
+ ViewEditor and ViewSlideEditor) should return CSS code
+\emph on
+ 
+\emph default
+that applies to the HTML code of the specific component.
+\begin_inset Newline newline
+\end_inset
+
+Make sure the specific components do not return CSS for the general part,
+ otherwise it would appear multiple times.
+\end_layout
+
+\begin_layout Description
+JavaScript JavaScript handles inheritance itself.
+ It should work in accordance to the management class inheritance.
+ That means there should be a generic class 
+\emph on
+ViewEditor
+\emph default
+ and a specific class 
+\emph on
+ViewSlideEditor
+\emph default
+ as it is in PHP.
+ From this follows that the 
+\emph on
+getJavaScript()
+\emph default
+ method of the PHP 
+\emph on
+ViewEditor
+\emph default
+ class should return the definition of the 
+\emph on
+ViewEditor
+\emph default
+ JavaScript class.
+ Specific classes such as ViewSlideEditor respectively.
+\end_layout
+
+\begin_layout Description
+RPC
+\begin_inset space ~
+\end_inset
+
+Server Inheritance of the RPC class is entirely done by PHP.
+ What the 
+\emph on
+getRpcClass()
+\emph default
+ returns depends on the need of the respective JavaScript code.
+\end_layout
+
+\begin_layout Subsubsection
+Client
+\end_layout
+
+\begin_layout Standard
+HTML and JavaScript code is generated from within PHP.
+ There is one class for each view component, whose names start with 
+\emph on
+View...
+
+\emph default
+ and implements the 
+\emph on
+View
+\emph default
+ interface, which provides methods to retrieve the HTML and JavaScript bits.
+\end_layout
+
+\begin_layout Standard
+When the website is loaded, all components of the view are loaded but hidden.
+ It is the responsibility of the JavaScript code to make necessary parts
+ visible.
+ Dynamic loading of HTML/JavaScript from the webserver is not currently
+ supported.
+ In order to perform this operation, there is a central registration file
+ called 
+\emph on
+viewRegistration.php
+\emph default
+, which shall hold a list of all view components.
+\end_layout
+
+\begin_layout Standard
+The following pictures shows an example of the class structure for two different
+ editors.
+\end_layout
+
+\begin_layout Subsubsection
+Server
+\end_layout
+
+\begin_layout Standard
+At the server side again there is one class per view component.
+ The name starts with 
+\emph on
+Rpc...
+
+\emph default
+ and the class provides all methods the client needs accessible via JSON-RPC.
+ The 
+\emph on
+jsonRPC2Server.php
+\emph default
+ does the actual RPC service implementation.
+\end_layout
+
+\begin_layout Section
+Image processing
+\end_layout
+
+\begin_layout Standard
+Pictures are very much involved in the presentation, which means that handling
+ them is a crutial part in this software.
+ The most important operation in means of image processing is resizing.
+ We start with a full size image and have to make it fit the final presentation
+ screen in HD resolution or prepare a small preview image to improve the
+ usability.
+\end_layout
+
+\begin_layout Standard
+All parts of the image processing library are located inside the 
+\emph on
+imgproc
+\emph default
+ subdirectory.
+\end_layout
+
+\begin_layout Subsection
+Interface
+\end_layout
+
+\begin_layout Standard
+To get image data use the 
+\emph on
+PpmImageCreator
+\emph default
+ singleton class.
+ It consists of one method to retrieve a particular image which adopts the
+ filename as well as the purpose the image will be used for.
+ It returns the image - modified for the particular purpose - as an image
+ string that is ready to be sent to the browser.
+ In most cases this is just a resized version.
+\end_layout
+
+\begin_layout Standard
+The actual information about the modification (e.g.
+ size) is part of the implementation, which is located in the classes derived
+ from 
+\emph on
+ImageProcessing
+\emph default
+.
+ The 
+\emph on
+ImageProcessingFactory
+\emph default
+ is used to retrieve an instance of the correct 
+\emph on
+ImageProcessing
+\emph default
+ subclass.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ImageProcessing-Class.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ImageProcessing-Communication.png
+	width 90text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are some more important properties of the 
+\emph on
+ImageProcessingFactory
+\emph default
+ class:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+inputDir:
+\emph default
+ location on the local filesystem where the source images are stored
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+cacheDir:
+\emph default
+ location on the local filesystem where the processed images should be written
+ to
+\end_layout
+
+\begin_layout Standard
+The given filename is always relative to the 
+\emph on
+inputDir
+\emph default
+.
+ The 
+\emph on
+cacheDir
+\emph default
+ preserves the same structure as the 
+\emph on
+inputDir
+\emph default
+.
+ Read in the next section about caching.
+\end_layout
+
+\begin_layout Subsection
+Caching process
+\end_layout
+
+\begin_layout Standard
+In order to improve performance, the 
+\emph on
+ImageProcessing
+\emph default
+ class does not perform the resize operation for any call, but uses some
+ kind of caching.
+\end_layout
+
+\begin_layout Standard
+The caching process is very simplistic.
+ The algorithm first checks if the output file exists and is newer than
+ the input file.
+ Only if neither of both criteria is fullfilled, it performs the resize
+ operation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename getImage-Activity.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

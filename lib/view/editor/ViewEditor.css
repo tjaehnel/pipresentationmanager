@@ -1,0 +1,7 @@
+.itemEditor {
+	display: none;
+	width: 500px;
+}
+.itemEditor h2 {
+	font-size: 20px;
+}

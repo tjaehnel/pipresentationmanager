@@ -1,0 +1,26 @@
+{
+    "id": "show2",
+    "title": "Show 2",
+    "items": [
+        {
+            "id": "1",
+            "title": "A simple item",
+            "imageFilename": "IMG-0004.jpg",
+            "imageText": null,
+            "class": "JsonAgendaPicture"
+        },
+        {
+            "id": "2",
+            "title": "Something else",
+            "imageFilename": "IMG-0013.jpg",
+            "imageText": null,
+            "class": "JsonAgendaPicture"
+        },
+        {
+            "id": "3",
+            "title": "Another item",
+            "movieFilename": "dummy1.mp4",
+            "class": "JsonAgendaMovie"
+        }
+    ]
+}

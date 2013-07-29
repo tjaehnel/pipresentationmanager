@@ -1,0 +1,10 @@
+#pictureEditor .previewImage {
+	display: block;
+	margin: 0;
+	padding-bottom: 5px;
+}
+
+#pictureEditor .imageText {
+	width: 450px;
+	height: 50px;
+}

@@ -1,0 +1,53 @@
+{
+    "id": "show3",
+    "title": "Show 3",
+    "items": [
+        {
+            "id": "1",
+            "title": "A simple item",
+            "imageFilename": "IMG-0001.jpg",
+            "imageText": null,
+            "class": "JsonAgendaPicture"
+        },
+        {
+            "id": "3",
+            "title": "Another item",
+            "movieFilename": "file2.mp4",
+            "class": "JsonAgendaMovie"
+        },
+        {
+            "id": "51d2fc90150cb",
+            "title": "sdfg",
+            "imageFilename": "IMG-0003.jpg",
+            "imageText": null,
+            "class": "JsonAgendaPicture"
+        },
+        {
+            "id": "51d2fd5286ab9",
+            "title": "Ein Bild",
+            "imageFilename": "IMG-0010.jpg",
+            "imageText": null,
+            "class": "JsonAgendaPicture"
+        },
+        {
+            "id": "51d301057e627",
+            "title": "New Slide asd",
+            "imageFilename": "IMG-0012.jpg",
+            "imageText": null,
+            "class": "JsonAgendaPicture"
+        },
+        {
+            "id": "51d3027605c96",
+            "title": "New Slide",
+            "imageFilename": "IMG-0007.jpg",
+            "imageText": null,
+            "class": "JsonAgendaPicture"
+        },
+        {
+            "id": "51d3027605a4b",
+            "title": "New Video",
+            "movieFilename": null,
+            "class": "JsonAgendaMovie"
+        }
+    ]
+}

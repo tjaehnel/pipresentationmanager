@@ -1,0 +1,95 @@
+@CHARSET "UTF-8";
+html, body {
+	font-family: Helvetica;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+#pagecontent {
+	position: relative;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+#header {
+	border-bottom: 1px solid;
+	height: 50px;
+}
+#header h1 {
+	font-size: 24px;
+}
+#agenda {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+    display: block;
+	float: left;
+/*	border-right: 1px solid #000000; */
+	padding-right: 10px;
+	margin-right: 10px;
+	margin-top: 60px;
+	width: 230px;
+}
+#agendaitemscontainer {
+	position: absolute;
+	top: 40px;
+	bottom: 10px;
+	width: 230px;
+}
+#agendaitems {
+	position: absolute;
+	display: block;
+	top: 0;
+	bottom: 70px;
+	width: 145px;
+	margin: 0;
+	padding-right: 40px;
+	overflow-y: scroll;
+}
+#showeditbuttons {
+	position: absolute;
+	bottom: 10px;
+}
+#showeditbuttons button {
+	width: 110px;
+}
+#agendaitems li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	margin-bottom: 10px;
+	border: 1px solid;
+	background-color: #fff;
+	cursor: pointer;
+	position: relative;
+}
+#agendaitems li img {
+	display: block;
+	z-index: 10;
+}
+#agendaitems li span {
+	font-size: 12px;
+	display: block;
+	width: 128px;
+	text-align: center;
+}
+#agendaitems li .sidebardelete {
+	display: none;
+	position: absolute;
+	right: 0;
+	top: 0;
+	float: right;
+	z-index: 100;
+}
+#itemsettings {
+	padding-left: 260px;
+    display: block;
+	float: left;
+}
+#agendaitems .selected {
+	border: 1px solid #F00;
+}
+.sidebartemplate {
+	display: none;
+}
