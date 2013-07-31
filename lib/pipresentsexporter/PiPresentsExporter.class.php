@@ -44,6 +44,7 @@ class PiPresentsExporter {
 		$show["trigger"] = "start";
 		$show["transition"] = "cut";
 		$show["omx-audio"] = "hdmi";
+		$show["omx-other-options"] = "-t 1";
 		$show["repeat"] = "interval";
 		$show["repeat-interval"] = "0";
 		$show["has-child"] = "no";
