@@ -73,12 +73,12 @@ class WebInterface {
 		$jsonRpc->registerClass($ppmrpc);
 		
 		foreach ($viewRegistration as $crntView) {
-			$jsonRpc->registerClass($crntView->getRpcClass());
+			$rpcClass = $crntView->getRpcClass();
+			if($rpcClass) {
+				$jsonRpc->registerClass($rpcClass);
+			}
 		}
 		
 		$jsonRpc->handle() or die('no request');
 	}
 }
-
-
-
