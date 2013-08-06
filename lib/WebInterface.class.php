@@ -16,15 +16,14 @@ class WebInterface {
 			echo $crntView->getJavaScript();
 			echo "\n";
 		}
-		require dirname(__FILE__).'/../js/ppm.js';
 	}
 	
 	public static function sendCSS() {
 		global $viewRegistration;
 		header("Content-Type: text/css");
-		require_once dirname(__FILE__).'/../css/ppm.css';
+		echo '@CHARSET "UTF-8";'."\n";
 		foreach ($viewRegistration as $crntView) {
-			echo $crntView->getCSS();
+			echo $crntView->getCSS()."\n";
 		}
 	}
 	
@@ -68,9 +67,7 @@ class WebInterface {
 	
 	public static function handleRpc() {
 		global $model, $viewRegistration;
-		$ppmrpc = new PpmRpc($model);
 		$jsonRpc = new jsonRPCServer();
-		$jsonRpc->registerClass($ppmrpc);
 		
 		foreach ($viewRegistration as $crntView) {
 			$rpcClass = $crntView->getRpcClass();

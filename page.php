@@ -18,21 +18,9 @@ require_once PPMDIR.'/viewRegistration.php';
 </head>
 <body>
 
-<div id="pagecontent">
-	<div id="header">
-		<h1>Raspberry Pi Presentation Manager</h1>
-	</div>
-	<div id="agenda">
-	</div>
-	<div id="itemsettings">
-	</div>
-</div>
 <?php foreach ($viewRegistration as $crntView) {
 	echo $crntView->getHTML();
 }?>
 
-<div id="confirmitemdeletedialog" title="Delete Item?">
-<p>Do you want to delete <emph class="itemtitle"></emph></p>
-</div>
 </body>
 </html>

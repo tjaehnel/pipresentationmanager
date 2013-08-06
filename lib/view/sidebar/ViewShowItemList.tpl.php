@@ -17,3 +17,6 @@
 	<img src="" class="sidebarimage">
 	<span class="sidebartitle"></span>
 </div>
+<div id="confirmitemdeletedialog" title="Delete Item?">
+<p>Do you want to delete <emph class="itemtitle"></emph></p>
+</div>

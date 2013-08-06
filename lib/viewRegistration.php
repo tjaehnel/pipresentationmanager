@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__).'/view/skeleton/ViewPageSkeleton.class.php';
 require_once dirname(__FILE__).'/view/sidebar/ViewShowList.class.php';
 require_once dirname(__FILE__).'/view/sidebar/ViewShowItemList.class.php';
 require_once dirname(__FILE__).'/view/editor/ViewEditor.class.php';
@@ -10,6 +11,7 @@ require_once dirname(__FILE__).'/view/filepicker/ViewMovieFilePicker.class.php';
 require_once dirname(__FILE__).'/jsonmodel/JsonModelRoot.class.php';
 
 $viewRegistration = array();
+$viewRegistration[] = new ViewPageSkeleton($model);
 $viewRegistration[] = new ViewShowList($model);
 $viewRegistration[] = new ViewShowItemList($model);
 $viewRegistration[] = new ViewEditor($model);
