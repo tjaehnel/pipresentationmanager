@@ -10,8 +10,6 @@ function ViewAgendaSideBar(rpc) {
 	this.rpc = rpc;
 	this.showItemList = new ViewShowItemList(rpc);
 	
-	this.pictureEditor = new ViewPictureEditor(this, rpc);
-	this.movieEditor = new ViewMovieEditor(this, rpc);
 	this.$agendaselect = $( "#agendaselect" );
 	this.$agendaitems = $("#agendaitems");
 	this.selectedAgenda = "";
@@ -63,11 +61,6 @@ ViewAgendaSideBar.prototype.selectAgenda = function(id) {
 	this.showItemList.displayShow(id);
 }
 
-ViewAgendaSideBar.prototype.markItemSelected = function($item) {
-	$('#agendaitems li').removeClass('selected');
-	$item.addClass('selected');
-}
-
 ViewAgendaSideBar.prototype.reloadAgendaList = function() {
 	var me = this;
 	this.rpc.PpmRpc.getAllAgendas('', function(jsonRpcObj) {
@@ -92,55 +85,6 @@ ViewAgendaSideBar.prototype.buildAgendaList = function(agendas) {
 	this.$agendaselect.multiselect({
 		multiple: false
 	});
-}
-
-ViewAgendaSideBar.prototype.addSlide = function(id, title, imgFilename) {
-	var me = this;
-	$newItem = $('#sidebarslidetemplate').clone();
-	$newItem.show();
-	$newItem.hover(
-			function() { $(this).find('.sidebardelete').show() },
-			function() { $(this).find('.sidebardelete').hide() }
-	);
-	
-	$itemImage = $newItem.find('.sidebarimage');
-	$itemImage.attr('src', imgFilename);
-	$itemTitle = $newItem.find('.sidebartitle');
-	$itemTitle.html(title);
-	$itemDelete = $newItem.find('.sidebardelete');
-	
-	$itemlink = $("<li></li>");
-	$itemlink.attr("value", id);
-	
-	bindfct = function() { // hack to preserve the correct itemdata
-		var itemlink = $itemlink;
-		var itemDelete = $itemDelete;
-		var itemTitle = title;
-		var itemId = id;
-		itemlink.bind("click", function(event) {
-			me.pictureEditor.editItem(me.selectedAgenda, itemId);
-			me.markItemSelected(itemlink);
-		});
-		itemDelete.bind("click", function(event) {
-			me.$deleteConfirmDialog.find(".itemtitle").html(itemTitle);
-			me.$deleteConfirmDialog.dialog({
-				buttons: {
-					"Yes": function() {
-						me.deleteItem(id);
-						$( this ).dialog( "close" );
-					},
-					"No": function() {
-						$( this ).dialog( "close" );						
-					}
-				}
-			});
-			me.$deleteConfirmDialog.dialog("open");
-		});
-	}
-	bindfct();
-	
-	$itemlink.append($newItem);
-	this.$agendaitems.append($itemlink);
 }
 
 ViewAgendaSideBar.prototype.deleteItem = function(id) {
