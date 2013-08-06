@@ -1,9 +1,7 @@
 <div id="agendaitemscontainer">
 	<ul id="agendaitems"></ul>
 	<div id="showeditbuttons">
-		<button id="addslidebtn">Add slide</button>
-		<button id="addvideobtn">Add video</button><br/>
-		<button id="saveshowbtn">Save show</button>
+		<button id="addslidebtn">Add slide</button><button id="addvideobtn">Add video</button><br/>
 		<button id="publishshowbtn">Publish show</button>
 	</div>
 </div>

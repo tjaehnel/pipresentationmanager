@@ -22,6 +22,9 @@
 #showeditbuttons button {
 	width: 110px;
 }
+#showeditbuttons #publishshowbtn {
+	width: 220px;
+}
 #agendaitems li {
 	list-style: none;
 	margin: 0;
