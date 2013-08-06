@@ -36,25 +36,8 @@ ViewAgendaSideBar.prototype.initView = function() {
 	this.$agendaselect.bind("multiselectclick", function(event, ui){
 		me.selectAgenda(ui.value);
 	});
-	this.$agendaitems.sortable();
-	this.$agendaitems.disableSelection();
 	
-	this.$addslidebtn.click(function(event) {
-		event.preventDefault();
-		me.addSlide("newS" + Math.uuid(), "New Slide", "<?=BASEURL?>img/noimage.png");
-	});
-	this.$addvideobtn.click(function(event) {
-		event.preventDefault();
-		me.addVideo("newV" + Math.uuid(), "New Video");
-	});
-	this.$saveshowbtn.click(function(event) {
-		event.preventDefault();
-		me.saveShow();
-	});
-	this.$publishshowbtn.click(function(event) {
-		event.preventDefault();
-		me.publishShow();
-	});
+	this.showItemList.initView();
 }
 
 ViewAgendaSideBar.prototype.selectAgenda = function(id) {
@@ -87,50 +70,3 @@ ViewAgendaSideBar.prototype.buildAgendaList = function(agendas) {
 	});
 }
 
-ViewAgendaSideBar.prototype.deleteItem = function(id) {
-	$thisitem = this.$agendaitems.find('[value="' + id + '"]');
-	$thisitem.hide( "scale", { percent: 0 }, 1000, function() {
-		$(this).remove();		
-	});
-}
-
-ViewAgendaSideBar.prototype.saveShow = function() {
-	var me = this;
-	$itemPoints = this.$agendaitems.find('li');
-	itemList = new Array();
-	$itemPoints.each(function() {
-		id = $(this).attr("value");
-		type = "";
-		if(id.match("^newS") == "newS") {
-			id="";
-			type="Picture";
-		} else if(id.match("^newV") == "newV") {
-			id="";
-			type="Movie";
-		}
-		crntItem = new Object();
-		crntItem.id = id;
-		crntItem.type = type;
-		itemList.push(crntItem);
-	});
-	
-	this.rpc.PpmRpc.saveShow(Array(this.selectedAgenda, itemList),
-			function(jsonRpcObj) {
-		console.log(jsonRpcObj);
-		alert('Show saved');
-		me.selectAgenda(me.selectedAgenda); // reload
-	}, function(error) {
-		alert(error.message + ": " + error.data.fullMessage);
-	});
-}
-
-ViewAgendaSideBar.prototype.publishShow = function() {
-	var me = this;
-	this.rpc.PpmRpc.publishShow(this.selectedAgenda, function(jsonRpcObj) {
-		console.log(jsonRpcObj);
-		alert('Successfully published show');
-		me.selectAgenda(me.selectedAgenda); // reload
-	}, function(error) {
-		alert(error.message + ": " + error.data.fullMessage);
-	});
-}
