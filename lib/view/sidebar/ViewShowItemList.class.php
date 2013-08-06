@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/../View.class.php';
 require_once dirname(__FILE__).'/../../model/PpmModelRoot.class.php';
-
+require_once dirname(__FILE__).'/ViewShowItemListRpc.class.php';;
 class ViewShowItemList implements View {
 	
 	protected $model;
@@ -34,6 +34,6 @@ class ViewShowItemList implements View {
 	}
 		
 	public function getRpcClass() {
-		return null;
+		return new ViewShowItemListRpc($this->model);
 	}
 }
