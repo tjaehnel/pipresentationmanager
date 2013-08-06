@@ -23,9 +23,6 @@ require_once PPMDIR.'/viewRegistration.php';
 		<h1>Raspberry Pi Presentation Manager</h1>
 	</div>
 	<div id="agenda">
-		<select name="agendaselect" id="agendaselect">
-		</select>
-
 	</div>
 	<div id="itemsettings">
 	</div>

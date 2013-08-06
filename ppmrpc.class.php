@@ -11,24 +11,7 @@ class PpmRpc {
 	public function __construct($model) {
 		$this->model = $model;
 	}
-	
-	public function getAllAgendas() {
-		$agendas = array();
-		foreach ($this->model->getAgendas() as $crntAgenda) {
-			$agendaArray = array();
-			$agendaArray['id'] = $crntAgenda->getId();
-			$agendaArray['title'] = $crntAgenda->getTitle();
-			$agendas[] = $agendaArray;
-		}
-		
-		// add a bad one, to tests error reporting
-		$agendaArray = array();
-		$agendaArray['id'] = '1234';
-		$agendaArray['title'] = "Bad Agenda";
-		$agendas[] = $agendaArray;
-		
-		return $agendas;
-	}
+
 	
 	public function ping($msg) {
 		return "pong: " . $msg;
