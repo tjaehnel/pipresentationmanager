@@ -18,6 +18,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with JSON-RPC2PHP; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+modified tj: Extended version uses simple task manager
 */
 
 /**
@@ -25,13 +27,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * for use with http://github.com/subutux/json-rpc2php/
  * @author Stijn Van Campenhout <stijn.vancampenhout@gmail.com>
  * @version 1.2
+ * modified tj: Added support for simple task manager
  */
- function jsonrpcphp(host,mainCallback,options){
+ function jsonrpcphp(host,simpleTaskManager,mainCallback,options){
  	defaultOptions = {
  		"ingoreErrors" : [],
  		"username" : "",
  		"password" : ""
  	}
+ 	this.simpleTaskManager = simpleTaskManager || null;
  	this.o = $.extend({},defaultOptions,options);
  	that = this;
  	this.host = host;
@@ -48,8 +52,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  	 * @param string method
  	 * @param string,array,object params
  	 * @param function callback
+ 	 * 
+ 	 * modified tj: Call simpleTaskManager after AJAX request finished.
  	 */
- 	this.__rpc__ = function(method,params,callback,errorcallback){
+ 	this.__rpc__ = function(method,params,callback,errorcallback,taskHandle){
  		request = {};
  		request.jsonrpc = "2.0";
  		request.method = method;
@@ -82,6 +88,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 		  },
 		  error: function(jqXHR,textStatus){
 		  	alert('error:' + textStatus);
+		  	that.simpleTaskManager.asyncTaskFinished(taskHandle);
 		  	return false;
 		  },
 		  success: function(r,textStatus,XMLHttpRequest){
@@ -101,6 +108,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  				}
  				/*alert(r.error.code + "::" + r.error.message + "::" + r.error.data.fullMessage);
  				console.log(r.error);*/
+ 				that.simpleTaskManager.asyncTaskFinished(taskHandle);
  				return false;
  			} else if (typeof r.id != "undefined"){
  				if (r.id == request.id){
@@ -108,11 +116,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  				} else {
  					//alert("jsonrpc2Error::NO_ID_MATCH::Given Id and recieved Id does not match");
  					that.err("jsonrpc2Error","NO_ID_MATCH","Given Id and recieved Id does not match");
+ 					that.simpleTaskManager.asyncTaskFinished(taskHandle);
  					return false;
  				}
  			} else {
+ 				that.simpleTaskManager.asyncTaskFinished(taskHandle);
  				return true;
  			}
+			that.simpleTaskManager.asyncTaskFinished(taskHandle);
  		 }
 		});
 
@@ -122,10 +133,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  	 *
  	 * @param string method
  	 * @return function
+ 	 * 
+ 	 * modified tj: call RPC method through simpleTaskManager
  	 */
  	this.buildFunction = function(method) {
  		return function (params,callback,errorcallback){
- 			that.__rpc__(method,params,callback,errorcallback);
+ 			that.simpleTaskManager.enqueueAsyncTask( function(taskHandle) {
+				that.__rpc__(method,params,callback,errorcallback, taskHandle); 				
+ 			});
  		}
  	}
  	

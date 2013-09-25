@@ -13,7 +13,8 @@ require_once PPMDIR.'/viewRegistration.php';
 <script type="text/javascript" src="<?=BASEURL?>js/jquery.js"></script>
 <script type="text/javascript" src="<?=BASEURL?>js/jquery-ui.custom.min.js"></script>
 <script type="text/javascript" src="<?=BASEURL?>js/jquery.multiselect.min.js"></script>
-<script type="text/javascript" src="<?=BASEURL?>js/jsonRPC2php.client.js"></script>
+<script type="text/javascript" src="<?=BASEURL?>js/jsonRPC2php-stm.client.js"></script>
+<script type="text/javascript" src="<?=BASEURL?>js/simpleTaskManager.js"></script>
 <script type="text/javascript" src="js.php"></script>
 </head>
 <body>
