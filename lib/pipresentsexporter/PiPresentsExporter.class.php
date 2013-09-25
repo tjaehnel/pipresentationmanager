@@ -159,7 +159,7 @@ class PiPresentsExporter {
 		
 		$ret = copy($inputFilename, $outputFilename);
 		if($ret === FALSE) {
-			throw new ExportException("Unable to copy to file ".$outputFilename);
+			throw new ExportException("Unable to copy '.$filename.' to ".$outputFilename);
 		}
 	}
 	
