@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/../model/XYPosition.class.php';
 
-class JsonXYPosition extends XYPosition {
+class JsonXYPosition implements XYPosition {
 	private $agendaObj;
 	
 	private $family;

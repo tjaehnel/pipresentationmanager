@@ -41,10 +41,14 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 		$itemData = parent::jsonSerialize();
 		$itemData['imageFilename'] = $this->imageFilename;
 		$itemData['imageText'] = $this->imageText;
-		$itemData['imageTextPosition'] =
-			$this->imageTextPosition->jsonSerialize();
-		$itemData['imageTextFontFace'] = 
-			$this->imageTextFontFace->jsonSerialize();
+		if($itemData['imageTextPosition']) {
+			$itemData['imageTextPosition'] =
+				$this->imageTextPosition->jsonSerialize();
+		}
+		if($itemData['imageTextFontFace']) {
+			$itemData['imageTextFontFace'] = 
+				$this->imageTextFontFace->jsonSerialize();
+		}
 		$itemData['imageTextColor'] = $this->imageTextColor;
 		return $itemData;
 	}
