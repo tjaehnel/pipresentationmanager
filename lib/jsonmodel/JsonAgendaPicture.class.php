@@ -5,6 +5,8 @@ require_once dirname(__FILE__).'/../model/AgendaPicture.class.php';
 class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 	private $imageFilename;
 	private $imageText;
+	private $imageTextFontFace;
+	private $imageTextFontColor;
 	
 	public function __construct($agendaObj, $itemData = null) {
 		parent::__construct($agendaObj, $itemData);
@@ -49,6 +51,24 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 	
 	public function setImageText($imageText) {
 		$this->imageText = $imageText;
+		$this->agendaObj->saveData();
+	}
+	
+	public function getImageTextFontFace() {
+		return $this->imageTextFontFace;
+	}
+
+ 	public function setImageTextFontFace($imageTextFontFace) {
+ 		$this->imageTextFontFace = $imageTextFontFace;
+ 		$this->agendaObj->saveData();
+	}
+	
+	public function getImageTextColor() {
+		return $this->imageTextFontColor;
+	}
+	
+	public function setImageTextColor($color) {
+		$this->imageTextFontColor = $color;
 		$this->agendaObj->saveData();
 	}
 }
