@@ -1,12 +1,15 @@
 <?php
 require_once dirname(__FILE__).'/JsonAgendaItem.class.php';
+require_once dirname(__FILE__).'/JsonFontFace.class.php';
+require_once dirname(__FILE__).'/JsonXYPosition.class.php';
 require_once dirname(__FILE__).'/../model/AgendaPicture.class.php';
 
 class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 	private $imageFilename;
 	private $imageText;
 	private $imageTextFontFace;
-	private $imageTextFontColor;
+	private $imageTextColor;
+	private $imageTextPosition;
 	
 	public function __construct($agendaObj, $itemData = null) {
 		parent::__construct($agendaObj, $itemData);
@@ -15,12 +18,17 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 	protected function createEmpty() {
 		parent::createEmpty();
 		$this->imageFilename = "";
+		$this->imageText = "";
+		$this->imageTextFontFace = new JsonFontFace($this->agendaObj);
 	}
 	
 	protected function applyJsonDecodedData($itemData) {
 		parent::applyJsonDecodedData($itemData);
 		$this->imageFilename = $itemData['imageFilename'];
 		$this->imageText = $itemData['imageText'];
+		$this->imageTextPosition = $itemData['imageTextPosition'];
+		$this->imageTextFontFace = $itemData['imageTextFontFace'];
+		$this->imageTextColor = $itemData['imageTextColor'];
 	}
 	
 	/**
@@ -33,6 +41,11 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 		$itemData = parent::jsonSerialize();
 		$itemData['imageFilename'] = $this->imageFilename;
 		$itemData['imageText'] = $this->imageText;
+		$itemData['imageTextPosition'] =
+			$this->imageTextPosition->jsonSerialize();
+		$itemData['imageTextFontFace'] = 
+			$this->imageTextFontFace->jsonSerialize();
+		$itemData['imageTextColor'] = $this->imageTextColor;
 		return $itemData;
 	}
 	
@@ -64,11 +77,20 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 	}
 	
 	public function getImageTextColor() {
-		return $this->imageTextFontColor;
+		return $this->imageTextColor;
 	}
 	
 	public function setImageTextColor($color) {
-		$this->imageTextFontColor = $color;
+		$this->imageTextColor = $color;
+		$this->agendaObj->saveData();
+	}
+	
+	public function getImageTextPosition() {
+		return $this->imageTextPosition;
+	}
+	
+	public function setImageTextPosition($position) {
+		$this->imageTextPosition = $position;
 		$this->agendaObj->saveData();
 	}
 }

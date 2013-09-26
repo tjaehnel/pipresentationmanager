@@ -16,4 +16,12 @@ interface AgendaPicture extends AgendaItem {
 	 * @param fontFace FontFace instance
 	 */
 	public function setImageTextFontFace($fontFace);
+	/**
+	 * @return XYPosition instance
+	 */
+	public function getImageTextPosition();
+	/**
+	 * @param fontFace XYPosition instance
+	*/
+	public function setImageTextPosition($position);
 }
