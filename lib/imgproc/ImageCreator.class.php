@@ -22,10 +22,12 @@ class ImageCreator {
 	
 	const DATA_DIR = 'data';
 	const CACHE_DIR = 'cache';
+	const CONFIG_EXTENSION = '.json';
 	
 	/**
-	 * @param String $filename
-	 * @param ImagePurpose $purpose
+	 * Return the given image prepared for the given purpose
+	 * @param String $filename plain filename without path
+	 * @param ImagePurpose $purpose @see ImagePurpose
 	 * @return String Image data, ready to send to the browser
 	 */
 	public function getImageForPurpose($filename, $purpose,
@@ -48,6 +50,34 @@ class ImageCreator {
 		}
 		$imgString = $imgProc->getProcessedImage();
 		return $imgString;
+	}
+	
+	/**
+	 * Return the configuration for the given image,
+	 * read from a configuration file located next to it.
+	 * Returns null if there is none.
+	 * @param String $filename plain filename without path
+	 * @return Array JSON decoded configuration data, or null
+	 */
+	public function getImageConfiguration($filename)
+	{
+		$configFilename = self::getConfigFilenameFromImage($imageFilename);
+		
+		$jsonData = file_get_contents($configFilename);
+		if($jsonData === false)
+		{
+			return null;
+		}
+		
+		$decodedConfig = json_decode($jsonData);
+		return $decodedConfig;
+	}
+	
+	protected static function getConfigFilenameFromImage($imageFilename) {
+		$dotPosition = strrchr($filename, '.');
+		$configFilename = substr($filename, 0, $dotPosition);
+		$configFilename .= self::CONFIG_EXTENSION;
+		return $configFilename;
 	}
 	
 	public static function getInstance() {
