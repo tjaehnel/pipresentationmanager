@@ -96,10 +96,25 @@ class PiPresentsExporter {
 		$track["duration"] = "4";
 		$track["track-ref"] = "";
 		$track["track-text"] = $item->getImageText();
-		$track["track-text-x"] = "50";
-		$track["track-text-y"] = "50";
-		$track["track-text-colour"] = "white";
-		$track["track-text-font"] = "helvetica 30 bold";
+		if($item->getImageTextPosition()) {
+			$track["track-text-x"] = $item->getImageTextPosition()->getX();
+			$track["track-text-y"] = $item->getImageTextPosition()->getY();
+		} else {
+			$track["track-text-x"] = 50;
+			$track["track-text-y"] = 50;
+		}
+		$track["track-text-colour"] = $item->getImageTextColor();
+		$fontFace = $item->getImageTextFontFace();
+		$fontDescription = "Helvetica 30 bold";
+		if($fontFace) {
+			$fontDescription = $fontFace->getFamily()." ";
+			$fontDescription .= $fontFace->getSize()." ";
+			$fontDescription .= $fontFace->getWeight()." ";
+			$fontDescription .= $fontFace->getSlant()." ";
+			$fontDescription .= ($fontFace->isOverstrike() ? "overstrike " : "");
+			$fontDescription .= ($fontFace->isUnderline() ? "underline " : "");
+		}
+		$track["track-text-font"] = $fontDescription;
 		$track["title"] = $item->getTitle();
 		$track["transition"] = "cut";
 		$track["location"] = $item->getImageFilename();
