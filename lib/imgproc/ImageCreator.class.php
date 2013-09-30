@@ -28,6 +28,8 @@ class ImageCreator {
 	 * Return the given image prepared for the given purpose
 	 * @param String $filename plain filename without path
 	 * @param ImagePurpose $purpose @see ImagePurpose
+	 * @param String $datadir Location of source images (optional)
+	 * @param String $cachedir Cache for processed images
 	 * @return String Image data, ready to send to the browser
 	 */
 	public function getImageForPurpose($filename, $purpose,
@@ -57,9 +59,10 @@ class ImageCreator {
 	 * read from a configuration file located next to it.
 	 * Returns null if there is none.
 	 * @param String $filename plain filename without path
+	 * @param String $datadir Location of source images (optional)
 	 * @return Array JSON decoded configuration data, or null
 	 */
-	public function getImageConfiguration($filename)
+	public function getImageConfiguration($filename, $datadir = self::DATA_DIR)
 	{
 		$configFilename = self::getConfigFilenameFromImage($imageFilename);
 		

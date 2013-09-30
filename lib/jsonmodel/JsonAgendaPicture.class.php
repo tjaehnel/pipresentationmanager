@@ -3,6 +3,7 @@ require_once dirname(__FILE__).'/JsonAgendaItem.class.php';
 require_once dirname(__FILE__).'/JsonFontFace.class.php';
 require_once dirname(__FILE__).'/JsonXYPosition.class.php';
 require_once dirname(__FILE__).'/../model/AgendaPicture.class.php';
+require_once dirname(__FILE__).'/../imgproc/ImageCreator.class.php';
 
 class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 	private $imageFilename;
@@ -10,25 +11,29 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 	private $imageTextFontFace;
 	private $imageTextColor;
 	private $imageTextPosition;
+	private $imageConfigAvailable;
+	
+	private $textConfigLoaded;
 	
 	public function __construct($agendaObj, $itemData = null) {
 		parent::__construct($agendaObj, $itemData);
+		$this->imageTextFontFace = null;
+		$this->imageTextColor = "";
+		$this->imageTextPosition = null;
+		$this->imageTextConfigAvailable = false;
+		$this->textConfigLoaded = false;
 	}
 	
 	protected function createEmpty() {
 		parent::createEmpty();
 		$this->imageFilename = "";
 		$this->imageText = "";
-		$this->imageTextFontFace = new JsonFontFace($this->agendaObj);
 	}
 	
 	protected function applyJsonDecodedData($itemData) {
 		parent::applyJsonDecodedData($itemData);
 		$this->imageFilename = $itemData['imageFilename'];
 		$this->imageText = $itemData['imageText'];
-		$this->imageTextPosition = $itemData['imageTextPosition'];
-		$this->imageTextFontFace = $itemData['imageTextFontFace'];
-		$this->imageTextColor = $itemData['imageTextColor'];
 	}
 	
 	/**
@@ -41,15 +46,6 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 		$itemData = parent::jsonSerialize();
 		$itemData['imageFilename'] = $this->imageFilename;
 		$itemData['imageText'] = $this->imageText;
-		if($itemData['imageTextPosition']) {
-			$itemData['imageTextPosition'] =
-				$this->imageTextPosition->jsonSerialize();
-		}
-		if($itemData['imageTextFontFace']) {
-			$itemData['imageTextFontFace'] = 
-				$this->imageTextFontFace->jsonSerialize();
-		}
-		$itemData['imageTextColor'] = $this->imageTextColor;
 		return $itemData;
 	}
 	
@@ -72,29 +68,65 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 	}
 	
 	public function getImageTextFontFace() {
+		$this->loadImgConfiguration();
 		return $this->imageTextFontFace;
 	}
 
  	public function setImageTextFontFace($imageTextFontFace) {
- 		$this->imageTextFontFace = $imageTextFontFace;
- 		$this->agendaObj->saveData();
+ 		throw ModelException("Attribute 'Font Face' is read-only");
 	}
 	
 	public function getImageTextColor() {
+		$this->loadImgConfiguration();
 		return $this->imageTextColor;
 	}
 	
 	public function setImageTextColor($color) {
-		$this->imageTextColor = $color;
-		$this->agendaObj->saveData();
+ 		throw ModelException("Attribute 'Text Color' is read-only");
 	}
 	
 	public function getImageTextPosition() {
-		return $this->imageTextPosition;
+		$this->loadImgConfiguration();
+		return $this->imageTextConfigAvailable;
 	}
 	
 	public function setImageTextPosition($position) {
-		$this->imageTextPosition = $position;
-		$this->agendaObj->saveData();
+ 		throw ModelException("Attribute 'Text Position' is read-only");
+	}
+	
+	public function isImageTextConfigAvailable() {
+		$this->loadImgConfiguration();
+		return $this->imageConfigAvailable;
+	}
+	
+	
+	protected function loadImgConfiguration() {
+		if($this->textConfigLoaded) {
+			return;
+		}
+		$this->textConfigLoaded = true;
+		
+		$imgConfig = ImageCreator::getInstance()
+			->getImageConfiguration($this->getImageFilename());
+		
+		if($imgConfig == null) {
+			return;
+		}
+		
+		$textConfig = $imgConfig['text'];
+		if($textConfig) {
+			$this->imageTextConfigAvailable = true;
+			$this->imageTextColor = $textConfig['color'];
+			$this->imageTextFontFace = new JsonFontFace();
+			$this->imageTextFontFace->setFamily($textConfig['font']);
+			$this->imageTextFontFace->setSize($textConfig['size']);
+			$this->imageTextFontFace->setWeight($textConfig['weight']);
+			$this->imageTextFontFace->setSlant($textConfig['slant']);
+			$this->imageTextFontFace->setUnderline($textConfig['underline']);
+			$this->imageTextFontFace->setOverstrike($textConfig['overstrike']);
+			$this->imageTextPosition = new JsonXYPosition();
+			$this->imageTextPosition->setX($textConfig['posX']);
+			$this->imageTextPosition->setY($textConfig['posY']);
+		}
 	}
 }

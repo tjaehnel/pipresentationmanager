@@ -28,15 +28,6 @@ class WebInterface {
 	}
 	
 	public static function sendImg() {
-		if(!isset($_GET['purpose']) || !is_numeric($_GET['purpose']))
-		{
-			header($_SERVER['SERVER_PROTOCOL'].' Internal Server Error');
-			header('X-Error_message: Invalid script parameters');
-			exit(1);
-		}
-		
-		$purpose = htmlentities($_GET['purpose']);
-		
 		if(!isset($_GET['filename']) || $_GET['filename'] == "")
 		{
 			header('content-type: image/jpeg');
@@ -45,10 +36,35 @@ class WebInterface {
 			echo $imgdata;
 			exit();
 		}
-		
 		$filename = htmlentities($_GET['filename']);
 		
-		
+		if(isset($_GET['config']))
+		{
+			self::sendImgConfigData($filename);
+		}
+		else 
+		{
+			if(!isset($_GET['purpose']) || !is_numeric($_GET['purpose']))
+			{
+				header($_SERVER['SERVER_PROTOCOL'].' Internal Server Error');
+				header('X-Error_message: Invalid script parameters');
+				exit(1);
+			}
+			$purpose = htmlentities($_GET['purpose']);
+			
+			self::sendImgData($filename, $purpose);
+		}		
+	}
+
+	protected static function sendImgConfigData($filename) {
+		$imgConfig = ImageCreator::getInstance()
+			->getImageConfiguration($filename, DATA_DIR);
+		$jsonImgConfig = json_encode($imgConfig);
+		header('content-type: application/json');
+		echo $jsonImgConfig;
+	}
+	
+	protected static function sendImgData($filename, $purpose) {
 		try {
 			$imgdata = ImageCreator::getInstance()->getImageForPurpose(
 					$filename, $purpose, DATA_DIR, CACHE_DIR);
