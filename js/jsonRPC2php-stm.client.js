@@ -148,8 +148,10 @@ modified tj: Extended version uses simple task manager
  	 * Build object for each method available like so:
  	 * rpc.[extension].[method](params,callback);
  	 *
+ 	 * modified tj: Call through simpleTasManager
  	 */
- 		this.__rpc__('rpc.listMethods','',function(system){
+	this.simpleTaskManager.enqueueAsyncTask( function(taskHandle) {
+		that.__rpc__('rpc.listMethods','',function(system){
  			console.log(system);
  			$.each(system.result,function(ext,methods){
  				that[ext] = {};
@@ -159,5 +161,6 @@ modified tj: Extended version uses simple task manager
  				};
  			});
  			mainCallback();
- 		});
+ 		}, null, taskHandle);
+	});
 }
