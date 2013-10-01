@@ -11,7 +11,7 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 	private $imageTextFontFace;
 	private $imageTextColor;
 	private $imageTextPosition;
-	private $imageConfigAvailable;
+	private $imageTextConfigAvailable;
 	
 	private $textConfigLoaded;
 	
@@ -87,7 +87,7 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 	
 	public function getImageTextPosition() {
 		$this->loadImgConfiguration();
-		return $this->imageTextConfigAvailable;
+		return $this->imageTextPosition;
 	}
 	
 	public function setImageTextPosition($position) {
@@ -96,9 +96,8 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 	
 	public function isImageTextConfigAvailable() {
 		$this->loadImgConfiguration();
-		return $this->imageConfigAvailable;
+		return $this->imageTextConfigAvailable;
 	}
-	
 	
 	protected function loadImgConfiguration() {
 		if($this->textConfigLoaded) {
@@ -113,20 +112,20 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 			return;
 		}
 		
-		$textConfig = $imgConfig['text'];
+		$textConfig = $imgConfig->text;
 		if($textConfig) {
 			$this->imageTextConfigAvailable = true;
-			$this->imageTextColor = $textConfig['color'];
+			$this->imageTextColor = $textConfig->color;
 			$this->imageTextFontFace = new JsonFontFace();
-			$this->imageTextFontFace->setFamily($textConfig['font']);
-			$this->imageTextFontFace->setSize($textConfig['size']);
-			$this->imageTextFontFace->setWeight($textConfig['weight']);
-			$this->imageTextFontFace->setSlant($textConfig['slant']);
-			$this->imageTextFontFace->setUnderline($textConfig['underline']);
-			$this->imageTextFontFace->setOverstrike($textConfig['overstrike']);
+			$this->imageTextFontFace->setFamily($textConfig->font);
+			$this->imageTextFontFace->setSize($textConfig->size);
+			$this->imageTextFontFace->setWeight($textConfig->weight);
+			$this->imageTextFontFace->setSlant($textConfig->slant);
+			$this->imageTextFontFace->setUnderline($textConfig->underline);
+			$this->imageTextFontFace->setOverstrike($textConfig->overstrike);
 			$this->imageTextPosition = new JsonXYPosition();
-			$this->imageTextPosition->setX($textConfig['posX']);
-			$this->imageTextPosition->setY($textConfig['posY']);
+			$this->imageTextPosition->setX($textConfig->posX);
+			$this->imageTextPosition->setY($textConfig->posY);
 		}
 	}
 }

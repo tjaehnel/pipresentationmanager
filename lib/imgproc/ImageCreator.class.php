@@ -64,9 +64,9 @@ class ImageCreator {
 	 */
 	public function getImageConfiguration($filename, $datadir = self::DATA_DIR)
 	{
-		$configFilename = self::getConfigFilenameFromImage($imageFilename);
+		$configFilename = self::getConfigFilenameFromImage($filename);
 		
-		$jsonData = file_get_contents($configFilename);
+		$jsonData = file_get_contents(self::DATA_DIR.'/'.$configFilename);
 		if($jsonData === false)
 		{
 			return null;
@@ -77,8 +77,8 @@ class ImageCreator {
 	}
 	
 	protected static function getConfigFilenameFromImage($imageFilename) {
-		$dotPosition = strrchr($filename, '.');
-		$configFilename = substr($filename, 0, $dotPosition);
+		$dotPosition = strrpos($imageFilename, '.');
+		$configFilename = substr($imageFilename, 0, $dotPosition);
 		$configFilename .= self::CONFIG_EXTENSION;
 		return $configFilename;
 	}
