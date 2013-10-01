@@ -41,12 +41,21 @@ class ViewPictureEditorRpc extends ViewEditorRpc {
 	
 	public function imageHasTextConfiguration($filename)
 	{
-		$imgCfg = ImageCreator::getInstance()->getImageConfiguration($filename);
-		if($imgCfg) {
+		if($this->internalImageHasTextConfiguration($filename)) {
 			return array('hasTextConfiguration' => true);
 		} else {
 			// workaround because it seems RPC methods must not return "false" 
 			return array('hasTextConfiguration' => false);
+		}
+	}
+	
+	protected function internalImageHasTextConfiguration($filename)
+	{
+		$imgCfg = ImageCreator::getInstance()->getImageConfiguration($filename);
+		if($imgCfg) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -60,7 +69,11 @@ class ViewPictureEditorRpc extends ViewEditorRpc {
 		}
 		
 		$item->setImageFilename($itemData['imageFilename']);
-		$item->setImageText($itemData['imageText']);
+		if($this->internalImageHasTextConfiguration($itemData['imageFilename'])) {
+			$item->setImageText($itemData['imageText']);
+		} else {
+			$item->setImageText("");
+		}
 		
 		parent::saveItem($agendaId, $itemData);
 	}
