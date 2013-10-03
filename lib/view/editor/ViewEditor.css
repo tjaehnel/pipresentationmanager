@@ -5,3 +5,9 @@
 .itemEditor h2 {
 	font-size: 20px;
 }
+.titletext {
+	border: 1px solid #CCCCCC;
+	font-weight: normal;
+	padding-left: 5px;
+	padding-right: 5px;
+}
