@@ -8,6 +8,10 @@ class ViewMovieEditor extends ViewEditor {
 		return "movieEditor";
 	}
 	
+	public function getEditorTitle() {
+		return "Movie";
+	}
+	
 	public function getHTML() {
 		return $this->getEditorHtml();
 	}

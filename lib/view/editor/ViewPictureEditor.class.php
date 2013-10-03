@@ -7,6 +7,10 @@ class ViewPictureEditor extends ViewEditor {
 	public function getEditorId() {
 		return "pictureEditor";
 	}
+
+	public function getEditorTitle() {
+		return "Slide";
+	}
 	
 	public function getHTML() {
 		return $this->getEditorHtml();

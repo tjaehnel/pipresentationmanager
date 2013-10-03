@@ -37,7 +37,11 @@ class ViewEditor implements View {
 	}
 	
 	public function getEditorId() {
-		"";
+		return "";
+	}
+	
+	public function getEditorTitle() {
+		return "";
 	}
 	
 	public function getFormHtml() {
