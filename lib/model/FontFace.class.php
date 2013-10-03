@@ -4,10 +4,10 @@ interface FontFace {
 	public function setFamily($family);
 	public function getSize();
 	public function setSize($size);
-	public function getBold();
-	public function isBold($bold);
-	public function getItalic();
-	public function isItalic($italic);
+	public function isBold();
+	public function setBold($bold);
+	public function isItalic();
+	public function setItalic($italic);
 	public function isUnderline();
 	public function setUnderline($underline);
 	public function isOverstrike();

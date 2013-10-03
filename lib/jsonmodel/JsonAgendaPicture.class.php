@@ -112,20 +112,20 @@ class JsonAgendaPicture extends JsonAgendaItem implements AgendaPicture {
 			return;
 		}
 		
-		$textConfig = $imgConfig->text;
+		$textConfig = $imgConfig['text'];
 		if($textConfig) {
 			$this->imageTextConfigAvailable = true;
-			$this->imageTextColor = $textConfig->color;
+			$this->imageTextColor = $textConfig['color'];
 			$this->imageTextFontFace = new JsonFontFace();
-			$this->imageTextFontFace->setFamily($textConfig->font);
-			$this->imageTextFontFace->setSize($textConfig->size);
-			$this->imageTextFontFace->setWeight($textConfig->weight);
-			$this->imageTextFontFace->setSlant($textConfig->slant);
-			$this->imageTextFontFace->setUnderline($textConfig->underline);
-			$this->imageTextFontFace->setOverstrike($textConfig->overstrike);
+			$this->imageTextFontFace->setFamily($textConfig['font']);
+			$this->imageTextFontFace->setSize($textConfig['size']);
+			$this->imageTextFontFace->setBold($textConfig['bold']);
+			$this->imageTextFontFace->setItalic($textConfig['italic']);
+			$this->imageTextFontFace->setUnderline($textConfig['underline']);
+			$this->imageTextFontFace->setOverstrike($textConfig['overstrike']);
 			$this->imageTextPosition = new JsonXYPosition();
-			$this->imageTextPosition->setX($textConfig->posX);
-			$this->imageTextPosition->setY($textConfig->posY);
+			$this->imageTextPosition->setX($textConfig['posX']);
+			$this->imageTextPosition->setY($textConfig['posY']);
 		}
 	}
 }

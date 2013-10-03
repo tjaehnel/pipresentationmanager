@@ -72,7 +72,7 @@ class ImageCreator {
 			return null;
 		}
 		
-		$decodedConfig = json_decode($jsonData);
+		$decodedConfig = json_decode($jsonData, true);
 		return $decodedConfig;
 	}
 	

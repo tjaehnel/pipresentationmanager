@@ -35,13 +35,13 @@ class JsonFontFace implements FontFace {
 	public function setSize($size) {
 		$this->size = $size;
 	}
-	public function getBold() {
+	public function isBold() {
 		return $this->bold;
 	}
 	public function setBold($bold) {
 		$this->bold = $bold;
 	}
-	public function getItalic() {
+	public function isItalic() {
 		return $this->italic;
 	}
 	public function setItalic($italic) {
