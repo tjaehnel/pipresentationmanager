@@ -5,8 +5,8 @@ class JsonFontFace implements FontFace {
 	
 	private $family;
 	private $size;
-	private $weight;
-	private $slant;
+	private $bold;
+	private $italic;
 	private $underline;
 	private $overstrike;
 	
@@ -17,8 +17,8 @@ class JsonFontFace implements FontFace {
 	protected function createEmpty() {
 		$this->family = "";
 		$this->size = "";
-		$this->weight = "";
-		$this->slant = "";
+		$this->bold = "";
+		$this->italic = "";
 		$this->underline = "";
 		$this->overstrike = "";
 	}
@@ -35,17 +35,17 @@ class JsonFontFace implements FontFace {
 	public function setSize($size) {
 		$this->size = $size;
 	}
-	public function getWeight() {
-		return $this->weight;
+	public function getBold() {
+		return $this->bold;
 	}
-	public function setWeight($weight) {
-		$this->weight = $weight;
+	public function setBold($bold) {
+		$this->bold = $bold;
 	}
-	public function getSlant() {
-		return $this->slant;
+	public function getItalic() {
+		return $this->italic;
 	}
-	public function setSlant($slant) {
-		$this->slant = $slant;
+	public function setItalic($italic) {
+		$this->italic = $italic;
 	}
 	public function isUnderline() {
 		return $this->underline;

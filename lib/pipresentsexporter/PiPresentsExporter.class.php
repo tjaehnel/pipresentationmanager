@@ -105,20 +105,26 @@ class PiPresentsExporter {
 		}
 		$track["track-text-colour"] = $item->getImageTextColor();
 		$fontFace = $item->getImageTextFontFace();
-		$fontDescription = "Helvetica 30 bold";
 		if($fontFace) {
-			$fontDescription = $fontFace->getFamily()." ";
-			$fontDescription .= $fontFace->getSize()." ";
-			$fontDescription .= $fontFace->getWeight()." ";
-			$fontDescription .= $fontFace->getSlant()." ";
-			$fontDescription .= ($fontFace->isOverstrike() ? "overstrike " : "");
-			$fontDescription .= ($fontFace->isUnderline() ? "underline " : "");
+			$fontDescription = $this->generateImageTextFontDescription($fontFace);
+		} else {
+			$fontDescription = "Helvetica 30 bold";
 		}
 		$track["track-text-font"] = $fontDescription;
 		$track["title"] = $item->getTitle();
 		$track["transition"] = "cut";
 		$track["location"] = $item->getImageFilename();
 		return $track;
+	}
+	
+	protected function generateImageTextFontDescription($fontFace) {
+		$fontDescription = $fontFace->getFamily();
+		$fontDescription .= " ".$fontFace->getSize()." ";
+		$fontDescription .= ($fontFace->isBold() ? " bold" : "");
+		$fontDescription .= ($fontFace->isItalic() ? " italic" : "");
+		$fontDescription .= ($fontFace->isOverstrike() ? "overstrike " : "");
+		$fontDescription .= ($fontFace->isUnderline() ? "underline " : "");
+		return $fontDescription;
 	}
 	
 	protected function generateVideoTrack(AgendaMovie $item) {
