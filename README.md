@@ -39,8 +39,11 @@ The configuration file is in JSON format and looks like this.
     }
 
 __font:__
-Font Face of the Text. Depending on the installed fonts.
+Font Family of the Text. Depending on the installed fonts.
 e.g. Arial, Helvetica, Times, Courier
+To find out which font families are installed, run the _tkfonts.sh_
+command from the _scripts_ subdirectory. Please note that X has
+to be running and you have to run the command as user _pi_. 
 
 __size:__
 Font size in pixels
